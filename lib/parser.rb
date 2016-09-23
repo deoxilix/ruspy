@@ -1,15 +1,15 @@
 %w{
-  tokenize
+  tokenizer
   ruspy
-}.each{ |klas| require klas }
+}.each{ |klas| require_relative klas }
 
 class String
   def is_integer?
-    true if Integer(string) rescue false
+    true if Integer(self) rescue false
   end
 
   def is_float?
-    true if Float(string) rescue false
+    true if Float(self) rescue false
   end
 end
 
@@ -19,24 +19,27 @@ class Parser
     @tokens = token_obj
   end
 
-  def neucleate
-    return "unexpected EOF" if @tokens.empty?
+  def atomize
+    if (token = self.tokens.pop) == "("
+      list = []
+      list << atomize until self.tokens.peek == ')'
+      self.tokens.pop
+      list
+    elsif token == ')'
+      raise 'lisp::Syntax Error'
+    else
+      convert(token)
+    end
+  end
 
-    if (token = tokens.pop) == "("
-      enlist
-    elsif token.is_integer?
+  def convert(token)
+    if token.is_integer?
       token.to_i
     elsif token.is_float?
       token.to_f
     else
       token.to_sym
-  end
-
-  def enlist
-    list = []
-    list << read until peek == ')'
-    pop_token
-    list
+    end
   end
 
   # private

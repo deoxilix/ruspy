@@ -1,18 +1,18 @@
 class Tokenizer
   attr_accessor :tokens
   def initialize(expression)
-    @tokens = expression.scan /[()]|\w+|".*?"|'.*?'/
+    @tokens = expression.gsub('(', ' ( ').gsub(')', ' ) ').split(" ")
   end
 
   def empty?
-    tokens.empty?
+    self.tokens.empty?
   end
 
   def pop
-    tokens.shift
+    self.tokens.shift
   end
 
   def peek
-    tokens.first
+    self.tokens.first
   end
 end

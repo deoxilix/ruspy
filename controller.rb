@@ -1,14 +1,15 @@
-require 'lib/parser'
-require 'lib/ruspy'
+require_relative 'lib/parser'
+require_relative 'lib/ruspy'
+require_relative 'lib/tokenizer'
 
 ruspy = Ruspy.new
 
 loop do
-  print "lispy> "; STDOUT.flush; line = gets.strip
-  break if line.empty? || line == "exit"
+  print "lispy> "; STDOUT.flush; lisp = gets.strip
+  break if lisp.empty? || lisp == "exit"
 
   begin
-    expression = Parser.new(Tokenize.new(line)).neucleate
+    expression = Parser.new(Tokenizer.new(lisp)).atomize
     print "lispy> "; STDOUT.flush; p ruspy.evaluate(expression)
 
   rescue Exception => error
