@@ -20,9 +20,12 @@ class Parser
   end
 
   def atomize
-    if (token = self.tokens.pop) == "("
+    token = self.tokens.pop
+    if token == "("
       list = []
-      list << atomize until self.tokens.peek == ')'
+      until self.tokens.peek == ')' do
+        list << atomize
+      end
       self.tokens.pop
       list
     elsif token == ')'
@@ -41,17 +44,4 @@ class Parser
       token.to_sym
     end
   end
-
-  # private
-  # def tokenize(exp)
-  #   exp.scan /[()]|\w+|".*?"|'.*?'/
-  # end
-  #
-  # def pop_token
-  #   @tokens.shift
-  # end
-  #
-  # def peek
-  #   @tokens.first
-  # end
 end
