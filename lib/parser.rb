@@ -20,10 +20,9 @@ class Parser
   end
 
   def atomize
-    token = self.tokens.pop
-    if token == "("
+    if (token = self.tokens.pop) == "("
       list = []
-      until self.tokens.peek == ')' do
+      until self.tokens.peek == ')' do                            #looping between a pair of ()
         list << atomize
       end
       self.tokens.pop

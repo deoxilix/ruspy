@@ -1,17 +1,17 @@
 require_relative 'lib/parser'
 require_relative 'lib/ruspy'
 require_relative 'lib/tokenizer'
-require 'pry'
 
 ruspy = Ruspy.new
 
 loop do
-  print "lispy> "; STDOUT.flush; lisp = gets.strip
+  print "ruspy> "; STDOUT.flush; lisp = gets.strip
   break if lisp.empty? || lisp == "exit"
+  raise SyntaxError, "Unexpected End of Input" if ((lisp.count '(') != (lisp.count ')'))
 
   begin
     expression = Parser.new(Tokenizer.new(lisp)).atomize
-    print "lispy> "; STDOUT.flush; puts ruspy.evaluate(expression)
+    print "ruspy> "; STDOUT.flush; puts ruspy.evaluate(expression)
 
   rescue Exception => error
     puts "\e[31m"
